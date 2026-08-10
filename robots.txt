@@ -1,10 +1,4 @@
-# robots.txt for Esnaf Collective
 User-agent: *
 Allow: /
 
-# Disallow administrative or hidden system files
-Disallow: /*.json$
-Disallow: /*.ps1$
-
-# Sitemap Directive
 Sitemap: https://esnafcocollective.com/sitemap.xml
