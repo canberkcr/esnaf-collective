@@ -1,0 +1,96 @@
+{
+  "hero": {
+    "tagline": "360° Medya & PR Kolektifi",
+    "headline_main": "Esnafın Ruhu,",
+    "headline_highlight": "Dijital Sinemada.",
+    "paragraph": "Geleneksel zanaatkâr kültürünü dijital çağın yüksek estetiğiyle buluşturuyoruz. 360° PR, sinematik prodüksiyon ve kreatif marka stratejisi ile Türkiye genelinde yerel işletmelere prestijli bir ses veriyoruz."
+  },
+  "about": {
+    "section_tag": "01 / SANATSAL VİZYON",
+    "title_main": "Gelenekten Geleceğe",
+    "title_highlight": "Sinematik Bir Köprü",
+    "quote": "Her zanaat bir eserdir; her esnaf ise zamanın ötesine aktarılması gereken canlı bir hikaye.",
+    "paragraph_left": "Esnaf Collective; Anadolu'nun köklü kültürünü ve yerel işletmelerin tutkulu serüvenini yüksek estetik standartlarla dijital mecralara taşıyan bağımsız bir 360° medya ve PR kolektifidir.",
+    "paragraph_right": "Geleneksel ajansların şişirilmiş yapılarından uzak, doğrudan yaratıcılarla çalışan çevik bir kolektif model. Yerel işletmeler için sürdürülebilir fiyatlandırma, hızlı teslimat ve gerçek yaratıcı iş birliği. Esnaf Collective, aracıları ortadan kaldırarak kaliteyi erişilebilir kılıyor. Her proje, doğrudan uzman yaratıcılarla yürütülür — fazla maliyet yok, gereksiz katman yok, sadece sonuç."
+  },
+  "services": [
+    {
+      "number": "01",
+      "title": "360° PR & İletişim Yönetimi",
+      "description": "Basın bültenleri, medya ilişkileri, dijital itibar kurgusu ve stratejik marka haberleri ile ulusal görünürlük."
+    },
+    {
+      "number": "02",
+      "title": "Sinematik Video Prodüksiyon",
+      "description": "4K/6K sinema kameralarıyla reklam filmleri, dikey video (Shorts/Reels) üretimi, mekan belgeselleri ve kurgu."
+    },
+    {
+      "number": "03",
+      "title": "Dijital Pazarlama & Sosyal Medya",
+      "description": "Instagram, YouTube ve TikTok kanal yönetimi, performans reklamcılığı ve veri odaklı büyüme stratejileri."
+    },
+    {
+      "number": "04",
+      "title": "Marka Kimliği & Yaratıcı Ajans",
+      "description": "Logo, ambalaj, kurumsal kimlik kitapçığı ve işletmenizin karakterini yansıtan kreatif konseptler."
+    },
+    {
+      "number": "05",
+      "title": "İçerik Stratejisi & Storytelling",
+      "description": "Esnaf samimiyetini sanatsal dille sunan reklam metinleri, video senaryoları ve marka hikaye kurgusu."
+    }
+  ],
+  "team": [
+    {
+      "badge": "FOUNDER",
+      "name": "Sıla Turaç Aksoy",
+      "role": "Kurucu & Yaratıcı Direktör",
+      "description": "Markaların anlatısını sinematik hikayelerle şekillendiriyor.",
+      "image": "assets/team-sila.png"
+    },
+    {
+      "badge": "DIGITAL LEAD",
+      "name": "Canberk Engin",
+      "role": "Dijital Direktör",
+      "description": "Dijital medya stratejileri ve büyüme süreçlerini yönetiyor.",
+      "image": "assets/team-canberk.png"
+    },
+    {
+      "badge": "MARKETING",
+      "name": "Ezgi Gökkaya",
+      "role": "Marketing Manager",
+      "description": "Pazarlama kampanyaları ve PR operasyonlarını yürütüyor.",
+      "image": "assets/team-ezgi.png"
+    },
+    {
+      "badge": "PRODUCER",
+      "name": "Kaan Tuncer",
+      "role": "Yapımcı",
+      "description": "Film prodüksiyon süreçlerini ve saha operasyonlarını yönetiyor.",
+      "image": "assets/team-kreatif.png"
+    }
+  ],
+  "faq": [
+    {
+      "question": "Esnaf Collective Türkiye genelinde çekim yapıyor mu?",
+      "answer": "Evet. İstanbul merkezli ekibimizle Türkiye'nin 81 ilindeki tüm esnaf ve yerel işletmelere yerinde sinematik çekim ve 360° ajans hizmeti sunuyoruz."
+    },
+    {
+      "question": "YouTube Shorts ve dikey video prodüksiyonu süreci nasıl işliyor?",
+      "answer": "Öncelikle işletmenizin ruhunu yansıtan senaryolar hazırlıyoruz. Ardından 4K/6K sinema kameralarıyla yapılan çekimleri profesyonel kurgu, renk düzenlemesi (color grading) ve yüksek etkileşimli sosyal medya formatlarıyla teslim ediyoruz."
+    },
+    {
+      "question": "360° PR paketine hangi hizmetler dahildir?",
+      "answer": "Basın bülteni hazırlığı ve dağıtımı, dijital itibar yönetimi, sosyal medya hesap yönetimi, marka kimliği tasarımı ve hedefli reklam kampanyalarını kapsayan bütüncül bir iletişim stratejisidir."
+    }
+  ],
+  "contact": {
+    "email": "info@esnafcocollective.com",
+    "region": "Türkiye Geneli (İstanbul & Tüm Şehirler)",
+    "instagram": "https://www.instagram.com/esnafco.collective/",
+    "youtube": "https://www.youtube.com/@Esnafco_tv"
+  },
+  "admin_security": {
+    "password_hash": "$2y$10$wN9aE8uKkPq0zL4L/Jz08O5Q3sU2nZ7w9V0zX1y2w3x4y5z6a7b8c"
+  }
+}

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Esnaf Collective — Yönetim Paneli (CMS)</title>
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Google Fonts: Cormorant Garamond, Syne & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['Cormorant Garamond', 'serif'],
+            syne: ['Syne', 'sans-serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            noir: {
+              950: '#050505',
+              900: '#0A0A0C',
+              850: '#111114',
+              800: '#18181C',
+              700: '#26262E',
+            },
+            luxury: {
+              champagne: '#C5A880',
+              gold: '#D4AF37',
+              cream: '#F4EBE1',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .glass-box {
+      background: rgba(10, 10, 12, 0.85);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .input-field {
+      width: 100%;
+      background: #050505;
+      border: 1px solid #26262E;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      font-size: 0.875rem;
+      color: #FFF;
+      transition: border-color 0.3s;
+    }
+    .input-field:focus {
+      outline: none;
+      border-color: #C5A880;
+    }
+    .tab-btn {
+      padding: 0.75rem 1.25rem;
+      font-family: monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 2px solid transparent;
+      color: #94A3B8;
+      transition: all 0.3s;
+    }
+    .tab-btn.active {
+      color: #C5A880;
+      border-bottom-color: #C5A880;
+      background: rgba(197, 168, 128, 0.05);
+    }
+  </style>
+</head>
+
+<body class="bg-noir-950 text-slate-300 font-sans antialiased min-h-screen">
+
+  <!-- ==================== LOGIN MODAL ==================== -->
+  <div id="login-modal" class="fixed inset-0 z-50 flex items-center justify-center p-6 bg-noir-950/95 backdrop-blur-2xl">
+    <div class="glass-box p-8 sm:p-12 rounded-3xl max-w-md w-full text-center space-y-6">
+      
+      <img src="assets/logo-beyaz.png" alt="Esnaf Collective Logo" class="h-10 mx-auto opacity-90" />
+      
+      <div>
+        <h1 class="font-syne text-2xl font-bold text-white mb-1">Yönetim Paneli Girişi</h1>
+        <p class="text-xs text-slate-400 font-mono">Güvenlik Doğrulaması</p>
+      </div>
+
+      <form id="login-form" class="space-y-4 text-left">
+        <div>
+          <label for="login-password" class="block text-xs font-mono uppercase tracking-widest text-slate-400 mb-2">Yönetici Şifresi</label>
+          <input 
+            id="login-password"
+            type="password" 
+            required 
+            placeholder="••••••••••••" 
+            class="input-field" 
+          />
+        </div>
+
+        <div id="login-error" class="hidden p-3 rounded-xl bg-red-950/50 border border-red-800 text-red-300 text-xs font-mono"></div>
+
+        <button 
+          type="submit" 
+          class="w-full py-3.5 rounded-xl bg-luxury-champagne text-noir-950 font-mono text-xs font-bold uppercase tracking-widest hover:bg-white transition-all duration-300"
+        >
+          Panele Giriş Yap
+        </button>
+
+        <p class="text-[11px] text-slate-500 text-center pt-2">
+          Varsayılan Şifre: <code class="text-luxury-champagne font-mono">Esnaf2026!Admin</code>
+        </p>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ==================== MAIN ADMIN DASHBOARD ==================== -->
+  <div id="admin-dashboard" class="hidden min-h-screen flex flex-col">
+    
+    <!-- Top Navigation Bar -->
+    <header class="glass-box sticky top-0 z-40 px-6 lg:px-12 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <img src="assets/logo-beyaz.png" alt="Esnaf Collective Logo" class="h-8 w-auto opacity-90" />
+        <span class="text-xs font-mono uppercase tracking-widest text-luxury-champagne border-l border-slate-800 pl-4 hidden sm:inline">CMS Yönetim Paneli</span>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <a href="index.html" target="_blank" class="px-4 py-2 rounded-full border border-slate-800 hover:border-luxury-champagne text-xs font-mono text-slate-300 hover:text-white transition-colors">
+          Siteyi Gör ↗
+        </a>
+        <button id="logout-btn" class="px-4 py-2 rounded-full bg-red-950/40 border border-red-900/60 hover:bg-red-900 text-xs font-mono text-red-300 hover:text-white transition-all">
+          Çıkış Yap
+        </button>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="max-w-7xl mx-auto w-full px-6 lg:px-12 py-10 flex-1 space-y-8">
+      
+      <!-- Tab Navigation -->
+      <div class="flex overflow-x-auto border-b border-slate-800 space-x-2 no-scrollbar">
+        <button class="tab-btn active" data-tab="tab-hero">01. Hero & Slogan</button>
+        <button class="tab-btn" data-tab="tab-about">02. Hakkımızda Vizyonu</button>
+        <button class="tab-btn" data-tab="tab-services">03. Hizmetler</button>
+        <button class="tab-btn" data-tab="tab-team">04. Ekip Kadrosu</button>
+        <button class="tab-btn" data-tab="tab-faq">05. SSS</button>
+        <button class="tab-btn" data-tab="tab-contact">06. İletişim</button>
+        <button class="tab-btn" data-tab="tab-security">07. Şifre Değiştir</button>
+      </div>
+
+      <!-- Action Floating Bar -->
+      <div class="flex justify-between items-center bg-noir-900 p-4 rounded-2xl border border-slate-800">
+        <span class="text-xs font-mono text-slate-400">Yaptığınız değişiklikleri canlı siteye aktarmak için kaydedin.</span>
+        <button id="save-all-btn" class="px-8 py-3 rounded-xl bg-luxury-champagne text-noir-950 font-mono text-xs font-bold uppercase tracking-widest hover:bg-white transition-all flex items-center gap-2">
+          <span>Değişiklikleri Kaydet</span>
+          <svg class="w-4 h-4 fill-none stroke-current" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+        </button>
+      </div>
+
+      <!-- Toast Feedback -->
+      <div id="toast-bar" class="hidden p-4 rounded-xl text-xs font-mono text-center"></div>
+
+      <!-- TAB 1: HERO -->
+      <div id="tab-hero" class="tab-content space-y-6">
+        <div class="glass-box p-8 rounded-3xl space-y-6">
+          <h2 class="font-syne text-xl font-bold text-white border-b border-slate-800 pb-3">Hero & Ana Sayfa Slogan Alanı</h2>
+
+          <div>
+            <label for="hero-tagline" class="block text-xs font-mono text-luxury-champagne uppercase mb-2">Üst Etiket (Tagline)</label>
+            <input id="hero-tagline" type="text" class="input-field" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label for="hero-main" class="block text-xs font-mono text-slate-400 uppercase mb-2">Ana Başlık (1. Satır)</label>
+              <input id="hero-main" type="text" class="input-field" />
+            </div>
+            <div>
+              <label for="hero-highlight" class="block text-xs font-mono text-luxury-champagne uppercase mb-2">Vurgulu Başlık (2. Satır Serif)</label>
+              <input id="hero-highlight" type="text" class="input-field" />
+            </div>
+          </div>
+
+          <div>
+            <label for="hero-paragraph" class="block text-xs font-mono text-slate-400 uppercase mb-2">Hero Açıklama Paragrafı</label>
+            <textarea id="hero-paragraph" rows="3" class="input-field"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: ABOUT -->
+      <div id="tab-about" class="tab-content hidden space-y-6">
+        <div class="glass-box p-8 rounded-3xl space-y-6">
+          <h2 class="font-syne text-xl font-bold text-white border-b border-slate-800 pb-3">Hakkımızda & Vizyon Metinleri</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div>
+              <label for="about-tag" class="block text-xs font-mono text-luxury-champagne uppercase mb-2">Bölüm Etiketi</label>
+              <input id="about-tag" type="text" class="input-field" />
+            </div>
+            <div>
+              <label for="about-title-main" class="block text-xs font-mono text-slate-400 uppercase mb-2">Başlık Satır 1</label>
+              <input id="about-title-main" type="text" class="input-field" />
+            </div>
+            <div>
+              <label for="about-title-highlight" class="block text-xs font-mono text-luxury-champagne uppercase mb-2">Başlık Satır 2 (Serif)</label>
+              <input id="about-title-highlight" type="text" class="input-field" />
+            </div>
+          </div>
+
+          <div>
+            <label for="about-quote" class="block text-xs font-mono text-luxury-champagne uppercase mb-2">Vurgulu Alıntı Cümlesi (Quote)</label>
+            <textarea id="about-quote" rows="2" class="input-field"></textarea>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label for="about-p-left" class="block text-xs font-mono text-slate-400 uppercase mb-2">Sol Paragraf</label>
+              <textarea id="about-p-left" rows="5" class="input-field"></textarea>
+            </div>
+            <div>
+              <label for="about-p-right" class="block text-xs font-mono text-luxury-champagne uppercase mb-2">Sağ Paragraf (Kolektif Vizyonu / Manifesto)</label>
+              <textarea id="about-p-right" rows="5" class="input-field"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: SERVICES -->
+      <div id="tab-services" class="tab-content hidden space-y-6">
+        <div class="glass-box p-8 rounded-3xl space-y-6">
+          <h2 class="font-syne text-xl font-bold text-white border-b border-slate-800 pb-3">Hizmetlerimiz (5 Ana Hizmet)</h2>
+          <div id="services-container" class="space-y-6"></div>
+        </div>
+      </div>
+
+      <!-- TAB 4: TEAM -->
+      <div id="tab-team" class="tab-content hidden space-y-6">
+        <div class="glass-box p-8 rounded-3xl space-y-6">
+          <h2 class="font-syne text-xl font-bold text-white border-b border-slate-800 pb-3">Ekibimiz (4 Üye)</h2>
+          <div id="team-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+        </div>
+      </div>
+
+      <!-- TAB 5: FAQ -->
+      <div id="tab-faq" class="tab-content hidden space-y-6">
+        <div class="glass-box p-8 rounded-3xl space-y-6">
+          <h2 class="font-syne text-xl font-bold text-white border-b border-slate-800 pb-3">Sıkça Sorulan Sorular (SSS)</h2>
+          <div id="faq-container" class="space-y-6"></div>
+        </div>
+      </div>
+
+      <!-- TAB 6: CONTACT -->
+      <div id="tab-contact" class="tab-content hidden space-y-6">
+        <div class="glass-box p-8 rounded-3xl space-y-6">
+          <h2 class="font-syne text-xl font-bold text-white border-b border-slate-800 pb-3">İletişim & Sosyal Medya Bilgileri</h2>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label for="contact-email" class="block text-xs font-mono text-luxury-champagne uppercase mb-2">İletişim E-Postası (Formların Düşeceği Adres)</label>
+              <input id="contact-email" type="email" class="input-field" />
+            </div>
+            <div>
+              <label for="contact-region" class="block text-xs font-mono text-slate-400 uppercase mb-2">Hizmet Bölgesi</label>
+              <input id="contact-region" type="text" class="input-field" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div>
+              <label for="contact-instagram" class="block text-xs font-mono text-luxury-champagne uppercase mb-2">Instagram Linki</label>
+              <input id="contact-instagram" type="url" class="input-field" />
+            </div>
+            <div>
+              <label for="contact-youtube" class="block text-xs font-mono text-luxury-champagne uppercase mb-2">YouTube Linki</label>
+              <input id="contact-youtube" type="url" class="input-field" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 7: SECURITY -->
+      <div id="tab-security" class="tab-content hidden space-y-6">
+        <div class="glass-box p-8 rounded-3xl max-w-lg space-y-6">
+          <h2 class="font-syne text-xl font-bold text-white border-b border-slate-800 pb-3">Şifre Değiştirme</h2>
+
+          <form id="password-change-form" class="space-y-4">
+            <div>
+              <label for="current-password" class="block text-xs font-mono text-slate-400 uppercase mb-2">Mevcut Şifre</label>
+              <input id="current-password" type="password" required class="input-field" />
+            </div>
+            <div>
+              <label for="new-password" class="block text-xs font-mono text-luxury-champagne uppercase mb-2">Yeni Şifre (En az 8 Karakter)</label>
+              <input id="new-password" type="password" required class="input-field" />
+            </div>
+            <button type="submit" class="px-6 py-3 rounded-xl bg-luxury-champagne text-noir-950 font-mono text-xs font-bold uppercase tracking-widest hover:bg-white transition-all">
+              Şifreyi Güncelle
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- ==================== JAVASCRIPT LOGIC ==================== -->
+  <script>
+    let csrfToken = '';
+    let contentData = null;
+
+    const loginModal = document.getElementById('login-modal');
+    const adminDashboard = document.getElementById('admin-dashboard');
+    const loginForm = document.getElementById('login-form');
+    const loginError = document.getElementById('login-error');
+    const logoutBtn = document.getElementById('logout-btn');
+    const saveAllBtn = document.getElementById('save-all-btn');
+    const toastBar = document.getElementById('toast-bar');
+
+    // Check Auth Status on Load
+    async function checkAuth() {
+      try {
+        const res = await fetch('save_content.php?action=check_auth');
+        const json = await res.json();
+        if (json.csrf_token) csrfToken = json.csrf_token;
+        if (json.logged_in) {
+          showDashboard();
+          loadData();
+        } else {
+          showLogin();
+        }
+      } catch (err) {
+        showLogin();
+      }
+    }
+
+    function showLogin() {
+      loginModal.classList.remove('hidden');
+      adminDashboard.classList.add('hidden');
+    }
+
+    function showDashboard() {
+      loginModal.classList.add('hidden');
+      adminDashboard.classList.remove('hidden');
+    }
+
+    // Login Form Submit
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError.classList.add('hidden');
+      const password = document.getElementById('login-password').value;
+
+      const formData = new FormData();
+      formData.append('password', password);
+
+      try {
+        const res = await fetch('save_content.php?action=login', {
+          method: 'POST',
+          body: formData
+        });
+        const json = await res.json();
+        if (json.success) {
+          csrfToken = json.csrf_token;
+          showDashboard();
+          loadData();
+        } else {
+          loginError.textContent = json.error || 'Giriş başarısız.';
+          loginError.classList.remove('hidden');
+        }
+      } catch (err) {
+        loginError.textContent = 'Bağlantı hatası oluştu.';
+        loginError.classList.remove('hidden');
+      }
+    });
+
+    // Logout
+    logoutBtn.addEventListener('click', async () => {
+      await fetch('save_content.php?action=logout');
+      location.reload();
+    });
+
+    // Tab Navigation
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.remove('hidden');
+      });
+    });
+
+    // Load Data into Forms
+    async function loadData() {
+      try {
+        const res = await fetch('save_content.php?action=get_data');
+        const json = await res.json();
+        if (json.success && json.data) {
+          contentData = json.data;
+          populateForms(contentData);
+        }
+      } catch (err) {
+        showToast('Veriler yüklenirken hata oluştu.', true);
+      }
+    }
+
+    function populateForms(d) {
+      // Hero
+      document.getElementById('hero-tagline').value = d.hero.tagline || '';
+      document.getElementById('hero-main').value = d.hero.headline_main || '';
+      document.getElementById('hero-highlight').value = d.hero.headline_highlight || '';
+      document.getElementById('hero-paragraph').value = d.hero.paragraph || '';
+
+      // About
+      document.getElementById('about-tag').value = d.about.section_tag || '';
+      document.getElementById('about-title-main').value = d.about.title_main || '';
+      document.getElementById('about-title-highlight').value = d.about.title_highlight || '';
+      document.getElementById('about-quote').value = d.about.quote || '';
+      document.getElementById('about-p-left').value = d.about.paragraph_left || '';
+      document.getElementById('about-p-right').value = d.about.paragraph_right || '';
+
+      // Services
+      const servContainer = document.getElementById('services-container');
+      servContainer.innerHTML = '';
+      d.services.forEach((s, idx) => {
+        servContainer.innerHTML += `
+          <div class="p-6 bg-noir-950 border border-slate-800 rounded-2xl space-y-4">
+            <div class="text-xs font-mono text-luxury-champagne">Hizmet #${s.number}</div>
+            <input type="text" id="service-title-${idx}" value="${s.title}" class="input-field font-semibold" />
+            <textarea id="service-desc-${idx}" rows="2" class="input-field text-xs">${s.description}</textarea>
+          </div>
+        `;
+      });
+
+      // Team
+      const teamContainer = document.getElementById('team-container');
+      teamContainer.innerHTML = '';
+      d.team.forEach((t, idx) => {
+        teamContainer.innerHTML += `
+          <div class="p-6 bg-noir-950 border border-slate-800 rounded-2xl space-y-4">
+            <div class="text-xs font-mono text-luxury-champagne">Ekip Üyesi #${idx+1}</div>
+            <div class="grid grid-cols-2 gap-4">
+              <input type="text" id="team-badge-${idx}" value="${t.badge}" class="input-field text-xs" placeholder="Rozet" />
+              <input type="text" id="team-name-${idx}" value="${t.name}" class="input-field font-semibold" placeholder="Ad Soyad" />
+            </div>
+            <input type="text" id="team-role-${idx}" value="${t.role}" class="input-field text-xs" placeholder="Unvan" />
+            <textarea id="team-desc-${idx}" rows="2" class="input-field text-xs" placeholder="Açıklama">${t.description}</textarea>
+          </div>
+        `;
+      });
+
+      // FAQ
+      const faqContainer = document.getElementById('faq-container');
+      faqContainer.innerHTML = '';
+      d.faq.forEach((f, idx) => {
+        faqContainer.innerHTML += `
+          <div class="p-6 bg-noir-950 border border-slate-800 rounded-2xl space-y-4">
+            <div class="text-xs font-mono text-luxury-champagne">Soru #${idx+1}</div>
+            <input type="text" id="faq-q-${idx}" value="${f.question}" class="input-field font-semibold" />
+            <textarea id="faq-a-${idx}" rows="2" class="input-field text-xs">${f.answer}</textarea>
+          </div>
+        `;
+      });
+
+      // Contact
+      document.getElementById('contact-email').value = d.contact.email || '';
+      document.getElementById('contact-region').value = d.contact.region || '';
+      document.getElementById('contact-instagram').value = d.contact.instagram || '';
+      document.getElementById('contact-youtube').value = d.contact.youtube || '';
+    }
+
+    // Save All Data
+    saveAllBtn.addEventListener('click', async () => {
+      if (!contentData) return;
+
+      // Extract values back
+      contentData.hero.tagline = document.getElementById('hero-tagline').value;
+      contentData.hero.headline_main = document.getElementById('hero-main').value;
+      contentData.hero.headline_highlight = document.getElementById('hero-highlight').value;
+      contentData.hero.paragraph = document.getElementById('hero-paragraph').value;
+
+      contentData.about.section_tag = document.getElementById('about-tag').value;
+      contentData.about.title_main = document.getElementById('about-title-main').value;
+      contentData.about.title_highlight = document.getElementById('about-title-highlight').value;
+      contentData.about.quote = document.getElementById('about-quote').value;
+      contentData.about.paragraph_left = document.getElementById('about-p-left').value;
+      contentData.about.paragraph_right = document.getElementById('about-p-right').value;
+
+      contentData.services.forEach((s, idx) => {
+        s.title = document.getElementById(`service-title-${idx}`).value;
+        s.description = document.getElementById(`service-desc-${idx}`).value;
+      });
+
+      contentData.team.forEach((t, idx) => {
+        t.badge = document.getElementById(`team-badge-${idx}`).value;
+        t.name = document.getElementById(`team-name-${idx}`).value;
+        t.role = document.getElementById(`team-role-${idx}`).value;
+        t.description = document.getElementById(`team-desc-${idx}`).value;
+      });
+
+      contentData.faq.forEach((f, idx) => {
+        f.question = document.getElementById(`faq-q-${idx}`).value;
+        f.answer = document.getElementById(`faq-a-${idx}`).value;
+      });
+
+      contentData.contact.email = document.getElementById('contact-email').value;
+      contentData.contact.region = document.getElementById('contact-region').value;
+      contentData.contact.instagram = document.getElementById('contact-instagram').value;
+      contentData.contact.youtube = document.getElementById('contact-youtube').value;
+
+      try {
+        const res = await fetch('save_content.php?action=save_data', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': csrfToken
+          },
+          body: JSON.stringify({ payload: contentData })
+        });
+        const json = await res.json();
+        if (json.success) {
+          showToast('✓ Tüm site metinleri başarıyla güncellendi!');
+        } else {
+          showToast(json.error || 'Kaydedilemedi.', true);
+        }
+      } catch (err) {
+        showToast('Bağlantı hatası oluştu.', true);
+      }
+    });
+
+    // Password Change Submit
+    document.getElementById('password-change-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const current_password = document.getElementById('current-password').value;
+      const new_password = document.getElementById('new-password').value;
+
+      const formData = new FormData();
+      formData.append('current_password', current_password);
+      formData.append('new_password', new_password);
+      formData.append('csrf_token', csrfToken);
+
+      try {
+        const res = await fetch('save_content.php?action=change_password', {
+          method: 'POST',
+          body: formData
+        });
+        const json = await res.json();
+        if (json.success) {
+          showToast('✓ Yönetici şifresi güncellendi!');
+          document.getElementById('password-change-form').reset();
+        } else {
+          showToast(json.error || 'Şifre güncellenemedi.', true);
+        }
+      } catch (err) {
+        showToast('Bağlantı hatası.', true);
+      }
+    });
+
+    function showToast(msg, isError = false) {
+      toastBar.textContent = msg;
+      toastBar.className = `p-4 rounded-xl text-xs font-mono text-center transition-all ${
+        isError ? 'bg-red-950/80 border border-red-800 text-red-300' : 'bg-luxury-champagne/10 border border-luxury-champagne/30 text-luxury-champagne'
+      }`;
+      toastBar.classList.remove('hidden');
+      setTimeout(() => toastBar.classList.add('hidden'), 4000);
+    }
+
+    checkAuth();
+  </script>
+
+</body>
+</html>

@@ -1090,6 +1090,24 @@
         formToast.classList.remove('hidden');
       });
     }
+
+    // Dynamic content.json Client Sync
+    fetch('content.json')
+      .then(res => res.json())
+      .then(d => {
+        if (!d) return;
+        if (d.hero) {
+          const t = document.getElementById('hero-tagline-txt');
+          const m = document.getElementById('hero-main-txt');
+          const h = document.getElementById('hero-highlight-txt');
+          const p = document.getElementById('hero-paragraph-txt');
+          if (t && d.hero.tagline) t.textContent = d.hero.tagline;
+          if (m && d.hero.headline_main) m.textContent = d.hero.headline_main;
+          if (h && d.hero.headline_highlight) h.textContent = d.hero.headline_highlight;
+          if (p && d.hero.paragraph) p.textContent = d.hero.paragraph;
+        }
+      })
+      .catch(() => {});
   </script>
 
 </body>
